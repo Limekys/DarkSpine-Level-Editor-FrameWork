@@ -1,22 +1,26 @@
-/// @description  TPList(list,index)
-/// @param list
-/// @param index
-function TPList() {
+// Feather disable all
 
+function TPList(_list, _index)
+{
+	/// @function TPList(list,index)
 	/// @param list
 	/// @param index
+	/// @return {array}
 
-	var _return, _data;
+	static _ = TGMS_BuildProperty(TPList,
+		function(_value, _data)
+		{
+			ds_list_replace(_data[0], _data[1], _value);
+		},
+		function(_data)
+		{
+			return ds_list_find_value(_data[0], _data[1]);
+		}
+	);
 
-	_data[0] = argument[0];
-	_data[1] = argument[1];
-	_return[0] = ext_DSList__;
-	_return[1] = _data;
-	return _return;
-
-
-
-
-
-
+	return [ TPList, [_list, _index] ];
 }
+
+
+
+

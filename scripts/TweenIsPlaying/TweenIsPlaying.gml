@@ -1,13 +1,10 @@
-/// @description  TweenIsPlaying(tween)
-/// @param tween
-/// @description Checks if tween is playing
-function TweenIsPlaying(argument0) {
+// Feather disable all
 
-	/// @param tween 	tween id
-
-	/// return: bool
-
-	/// TweenIsPlaying(tween)
+function TweenIsPlaying(_t)
+{
+	/// @function TweenIsPlaying(tween)
+	/// @description Checks if tween is playing
+	/// @param tween	tween id
 	/*
 	    NOTE:
 	        ** Will NOT return true if tween is processing a delay **
@@ -19,13 +16,8 @@ function TweenIsPlaying(argument0) {
 	        }
 	*/
 
-	var _t = TGMS_FetchTween(argument0);
-	if (is_undefined(_t)) return false;
+	_t = TGMS_FetchTween(_t);
+	if (is_undefined(_t)) { return false; }
 
 	return _t[TWEEN.STATE] >= 0;
-
-
-
-
-
 }

@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Tween Control",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Tweening/Tween Control.yy",
+    "name": " Tween State",
+    "path": "folders/TweenGMS Legacy/Scripts/ Tween State.yy",
   },
   "resourceVersion": "1.0",
   "name": "TweenFinish",

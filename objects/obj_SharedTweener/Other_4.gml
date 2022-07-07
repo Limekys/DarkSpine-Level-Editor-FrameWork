@@ -1,4 +1,5 @@
-/// @description  Handle Persistence
+/// @description Handle Persistence
+// Feather disable all
 
 // Return early if tweener already marked as being destroyed
 if (isDestroyed) { return 0; }
@@ -36,9 +37,3 @@ if (room_persistent)
     tweensProcessNumber = ds_list_size(tweens);
     delaysProcessNumber = ds_list_size(delayedTweens);
 }
-
-
-
-
-
-

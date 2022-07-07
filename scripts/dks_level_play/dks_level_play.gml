@@ -57,7 +57,7 @@ function dks_level_play()
 		// Playing any Tween 
 	 if (have_tween)
 	 {
-	  TweenPlay(TweensTarget(id));
+	  TweenPlay(self);
 	 }
 		
 	 // Performing events

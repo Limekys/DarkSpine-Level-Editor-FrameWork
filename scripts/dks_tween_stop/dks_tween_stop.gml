@@ -4,7 +4,7 @@ function dks_tween_stop(argument0)
 	{
 	 if is_array(tween)
 	 {
-	  TweenStop(TweensTarget(id));
+	  TweenStop(self);
 	  dks_tweener_tween_reset(id);
 	 }
 	}

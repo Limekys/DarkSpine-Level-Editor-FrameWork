@@ -1,4 +1,5 @@
-/// @description  Handle Persistence
+/// @description Handle  Persistence
+// Feather disable all
 
 // Return early if tweener already marked as being destroyed
 if (isDestroyed) { return 0; }
@@ -151,5 +152,3 @@ else
 // Update process counts
 tweensProcessNumber = ds_list_size(tweens);
 delaysProcessNumber = ds_list_size(delayedTweens);
-
-

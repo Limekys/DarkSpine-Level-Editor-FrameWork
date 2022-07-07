@@ -1,4 +1,11 @@
-/// @description  System Cleanup
+/// @description System Cleanup
+// Feather disable all
+/*
+	Herbrews 11:6
+	And without faith it is impossible to please him, 
+	for whoever would draw near to God must believe that 
+	he exists and that he rewards those who seek him.
+*/
 
 if (firstDestroy)
 {
@@ -38,7 +45,7 @@ var _tweens = tweens;
 var _tIndex = -1;
 repeat(ds_list_size(_tweens))
 {   
-    var _t = _tweens[| ++_tIndex];             // Get tween and decrement iterator
+    var _t = _tweens[| ++_tIndex];             // Get tween and increment iterator
     _t[@ TWEEN.STATE] = TWEEN_STATE.DESTROYED; // Set state as destroyed
     _t[@ TWEEN.ID] = undefined;                // Nullify self reference
     
@@ -69,6 +76,7 @@ ds_map_destroy(simpleTweens);
 ds_map_destroy(pRoomTweens);
 ds_map_destroy(pRoomDelays);
 ds_priority_destroy(eventCleaner);
+ds_queue_destroy(stateChanger);
 
-
+global.TGMS_Environment = noone;
 

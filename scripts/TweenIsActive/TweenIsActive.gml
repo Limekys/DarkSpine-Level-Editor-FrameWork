@@ -1,24 +1,17 @@
-/// @description  TweenIsActive(tween)
-/// @param tween
-/// @description Checks if tween is active
-function TweenIsActive(argument0) {
+// Feather disable all
 
+function TweenIsActive(_t) 
+{
+	/// @function TweenIsActive(tween)
+	/// @description Checks if tween is active
 	/// @param tween tween id
-
-	/// return: bool
-
 	/*
 	    INFO:
 	        Returns true if tween is playing OR actively processing a delay
 	*/
 
-	var _t = TGMS_FetchTween(argument0);
-	if (is_undefined(_t)) return false;
+	_t = TGMS_FetchTween(_t);
+	if (is_undefined(_t)) { return false; }
 
 	return (_t[TWEEN.STATE] >= 0 || _t[TWEEN.STATE] == TWEEN_STATE.DELAYED);
-
-
-
-
-
 }

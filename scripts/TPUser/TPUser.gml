@@ -1,10 +1,10 @@
-/// @description  TPUser(event,[...])
-/// @param event
-/// @param [...]
-function TPUser() {
+// Feather disable all
 
-	/// @param event      User event to use as a property
-	/// @param [...]      (Optional) Extra data to pass to user event. Accessible via TWEEN_USER_DATA in user event
+
+function TPUser(_user_event)
+{
+	/// @function TPUser(event, [...])
+	/// @return {array}
 	/*
 		[EXAMPLE 1] --> Use user event as tween property
 			[SOME EVENT]
@@ -13,7 +13,7 @@ function TPUser() {
 		
 			[USER EVENT 0]
 			// Update value in user event 0
-			TWEEN_USER_TARGET.someValue = TWEEN_USER_VALUE;
+			abc = TWEEN_USER_VALUE;
 		
 		[EXAMPLE 2] --> Have extended data passed to user event
 			[SOME EVENT]
@@ -21,10 +21,9 @@ function TPUser() {
 			TweenFire(id, EaseLinear, 0, true, 0, 1.0, TPUser(1, c_white, c_red), 0, 1);
 		
 			[USER EVENT 1]
-			var _target = TWEEN_USER_TARGET;
 			var _value = TWEEN_USER_VALUE;
 			var _data = TWEEN_USER_DATA; // This will contain c_white/c_red values
-			_target.image_blend = merge_colour(_data[0], _data[1], _value);	
+			image_blend = merge_colour(_data[0], _data[1], _value);
 		
 		[EXAMPLE 3] --> How to set up a user event to support TweenFireTo/From()
 			[SOME EVENT]
@@ -33,22 +32,62 @@ function TPUser() {
 		
 			[USER EVENT 0]
 			// User Event 2
-			if (TWEEN_USER_GET) // Getter
-			{   
-			    TWEEN_USER_GET = TWEEN_USER_TARGET.someVariable;
+			if (TWEEN_USER_GET) // GETTER
+			{
+			    TWEEN_USER_GET = abc;
 			}
-			else // Setter
-			{   
-			    TWEEN_USER_TARGET.someVariable = TWEEN_USER_GET;
+			else // SETTER
+			{
+			    abc = TWEEN_USER_VALUE;
 			}
 	*/
+	
+	//=====================================
+	
+	// BUILD PROPERTY SETTER/GETTER
+	static _ = TGMS_BuildProperty(TPUser,
+		function(_value, _event, _target)
+		{
+			TWEEN_USER_VALUE = _value;
+			TWEEN_USER_TARGET = _target;
+			
+			with(_target)
+			{
+				if (is_real(_event)) {
+				    event_perform_object(object_index, ev_other, _event);
+				}
+				else {
+				    TWEEN_USER_DATA = _event[1];
+				    event_perform_object(object_index, ev_other, _event[0]);
+				}
+			}
+		},
+		function(_event, _target)
+		{
+			TWEEN_USER_TARGET = _target;
+			TWEEN_USER_GET = 1;
 
-	var _return;
-	_return[0] = ext_PropUser__;
+			with(_target)
+			{
+				if (is_real(_event)) {
+				    event_perform_object(object_index, ev_other, _event);
+				}
+				else {
+				    TWEEN_USER_DATA = _event[1];
+				    event_perform_object(object_index, ev_other, _event[0]);
+				}
 
+				var _return = TWEEN_USER_GET;
+				TWEEN_USER_GET = 0;
+				return _return;
+			}
+		}
+	);
+	
+	
 	if (argument_count == 1)
-	{    
-	    _return[1] = ev_user0+argument[0];
+	{
+		return [TPUser, ev_user0+_user_event];
 	}
 	else // Extended Data
 	{
@@ -60,16 +99,12 @@ function TPUser() {
 	        _args[i] = argument[i+1];
 	    }
     
-	    var _data;
-	    _data[0] = ev_user0+argument[0];
-	    _data[1] = _args;
-	    _return[1] = _data;
+		return [TPUser, [ev_user0+_user_event, _args]];
 	}
-
-	return _return;
-
-
-
-
-
 }
+
+
+
+
+
+

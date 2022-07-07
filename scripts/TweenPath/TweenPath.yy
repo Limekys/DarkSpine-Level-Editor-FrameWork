@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Tween Path",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Tweening/Tween Path.yy",
+    "name": " Tween Tools",
+    "path": "folders/TweenGMS Legacy/Scripts/ Tween Tools.yy",
   },
   "resourceVersion": "1.0",
   "name": "TweenPath",

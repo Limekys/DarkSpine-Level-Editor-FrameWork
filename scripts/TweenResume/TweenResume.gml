@@ -1,11 +1,11 @@
-/// @description  TweenResume(tween[s])
-/// @param tween[s]
-/// @description Pauses the selected tween[s]
-/// @param tween[s] tween id
-function TweenResume(argument0) {
-	// RETURNS: na
+// Feather disable all
 
-	var _t = argument0;
+
+function TweenResume(_t)
+{
+	/// @function TweenResume(tween[s])
+	/// @description Resumes the selected tween[s]
+	/// @param tween[s] tween id
 
 	if (is_real(_t))
 	{
@@ -28,13 +28,9 @@ function TweenResume(argument0) {
 	        }
 	    }
 	}
-
+	else
 	if (is_string(_t))
 	{
 	    TGMS_TweensExecute(_t, TweenResume);
 	}
-
-
-
-
 }

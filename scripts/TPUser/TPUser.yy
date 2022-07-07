@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "User Events",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Enhanced Properties/Default Properties/User Events.yy",
+    "name": "Properties",
+    "path": "folders/TweenGMS Legacy/Scripts/Properties.yy",
   },
   "resourceVersion": "1.0",
   "name": "TPUser",

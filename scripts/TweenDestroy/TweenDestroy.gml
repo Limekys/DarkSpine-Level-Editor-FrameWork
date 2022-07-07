@@ -1,17 +1,12 @@
-/// @description  TweenDestroy(tween[s])
-/// @param tween[s]
-/// @description Manually destroys the selected tween[s]
-function TweenDestroy(argument0) {
+// Feather disable all
 
+function TweenDestroy(_t)
+{
+	/// @function TweenDestroy(tween[s])
+	/// @description Manually destroys the selected tween[s]
 	/// @param tween[s] tween id[s]
-
-	/// RETURNS: null tween id
-
-	/*
-	    Note: Tweens are always automatically destroyed when their target instance is destroyed.
-	*/
-
-	var _t = argument0;
+	
+	// --> NOTE: Tweens are always automatically destroyed when their target instance is destroyed.
 
 	if (is_real(_t))
 	{
@@ -63,11 +58,76 @@ function TweenDestroy(argument0) {
 	}
 
 	return undefined;
-
-
-
-
-
-
-
 }
+
+
+function TweenDestroySafe(_t) 
+{
+	/// @function TweenDestroySafe(tween[s])
+	/// @description Safely destroys a tween without error, even if it doesn't exist
+	/// @param	tween[s] tween id(s)
+
+	if (is_array(_t))
+	{
+	    return TweenDestroy(_t);
+	}
+
+	if (is_real(_t))
+	{
+	    if (ds_map_exists(global.TGMS_MAP_TWEEN, _t))
+	    {
+	        return TweenDestroy(_t);
+	    }
+    
+	    return undefined;
+	}
+
+	if (is_string(_t))
+	{
+	    TGMS_TweensExecute(_t, TweenDestroySafe);
+	}
+
+	return undefined;
+}
+
+function TweenDestroyWhenDone()
+{
+	/// @function TweenDestroyWhenDone(tween[s], destroy, [kill_target])
+	/// @description Forces a tween to be destroyed when finished or stopped
+	/// @param	tween[s]	tween id(s)
+	/// @param	destroy?		destroy tween[s] when finished or stopped?
+	/// @param	[kill_target?]	(optional) destroy target when tween finished or stopped?
+
+	var _t = argument[0];
+
+	if (is_real(_t))
+	{
+	    _t = TGMS_FetchTween(_t);
+	}
+
+	if (is_array(_t))
+	{
+	    if (argument_count == 2)
+	    {
+	        _t[@ TWEEN.DESTROY] = argument[1];
+	    }
+	    else
+	    {
+			var _doDestroy = argument[1];
+	        _t[@ TWEEN.DESTROY] = (_doDestroy+argument[2])*_doDestroy;
+	    }
+	}
+
+	if (is_string(_t))
+	{
+	    if (argument_count == 2)
+	    {
+	        TGMS_TweensExecute(_t, TweenDestroyWhenDone, argument[1]);
+	    }
+	    else
+	    {
+	        TGMS_TweensExecute(_t, TweenDestroyWhenDone, argument[1], argument[2]);
+	    }
+	}
+}
+

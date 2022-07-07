@@ -55,7 +55,7 @@ function dks_work_play()
    
 		if (have_tween)
 	 {
-	  TweenPlay(TweensTarget(id));
+	  TweenPlay(self);
 	 }	
 		
 		

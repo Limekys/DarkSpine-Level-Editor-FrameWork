@@ -1,11 +1,11 @@
-/// @description  TweenPause(tween[s])
-/// @param tween[s]
-/// @description Pauses the selected tween[s]
-/// @param tween[s] tween id
-function TweenPause(argument0) {
-	// RETURNS: na
+// Feather disable all
 
-	var _t = argument0;
+
+function TweenPause(_t)
+{
+	/// @function TweenPause(tween[s])
+	/// @description Pauses the selected tween[s]
+	/// @param tween[s] tween id
 
 	if (is_real(_t))
 	{
@@ -17,24 +17,18 @@ function TweenPause(argument0) {
 	    if (_t[TWEEN.STATE] >= 0)
 	    {
 	        _t[@ TWEEN.STATE] = TWEEN_STATE.PAUSED;
-	        return TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PAUSE);
+	        TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PAUSE);
 	    }
-
+		else
 	    if (_t[TWEEN.STATE] == TWEEN_STATE.DELAYED)
 	    {
 	        _t[@ TWEEN.STATE] = TWEEN_STATE.PAUSED;
-	        return TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PAUSE_DELAY);
+	        TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PAUSE_DELAY);
 	    }
 	}
-
+	else
 	if (is_string(_t))
 	{
 	    TGMS_TweensExecute(_t, TweenPause);
 	}
-
-
-
-
-
-
 }

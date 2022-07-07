@@ -1,12 +1,11 @@
-/// @description  TweenExists(tween)
-/// @param tween
-/// @description Checks if tween exists
-function TweenExists(argument0) {
+// Feather disable all
 
-	/// @param tween 	tween id
 
-	/// return: bool
-
+function TweenExists(_tween)
+{
+	/// @function TweenExists(tween)
+	/// @description Checks if tween exists
+	/// @param tween	tween id
 	/*      
 	    Example:
 	        if (TweenExists(tween))
@@ -15,24 +14,21 @@ function TweenExists(argument0) {
 	        }
 	*/
 
-	var _t;
+	SharedTweener();
 
-	if (is_real(argument0))
+	if (is_real(_tween))
 	{
-	    if (ds_map_exists(global.TGMS_MAP_TWEEN, argument0))
-	    {
-	        _t = global.TGMS_MAP_TWEEN[? argument0];
-	    }
-	    else
-	    {
-	        return false;
-	    }
+		_tween = global.TGMS_MAP_TWEEN[? _tween];
+		
+		if (is_undefined(_tween))
+		{
+			return false;
+		}
 	}
 	else
-	if (is_array(argument0))
+	if (is_array(_tween))
 	{
-	    _t = argument0;
-	    if (_t[TWEEN.STATE] == TWEEN_STATE.DESTROYED)
+	    if (_tween[TWEEN.STATE] == TWEEN_STATE.DESTROYED)
 	    {
 	        return false;
 	    }
@@ -42,13 +38,13 @@ function TweenExists(argument0) {
 	    return false;
 	}
     
-	var _target = _t[TWEEN.TARGET];
-
-	if (instance_exists(_target))
+	if (instance_exists(_tween[TWEEN.TARGET]))
 	{
 	    return true;
 	}
 
+	var _target = _tween[TWEEN.TARGET];
+	
 	instance_activate_object(_target);
 
 	if (instance_exists(_target))
@@ -56,10 +52,6 @@ function TweenExists(argument0) {
 	    instance_deactivate_object(_target);
 	    return true;
 	}
-
-
-
-
-
-
+	
+	return false;
 }

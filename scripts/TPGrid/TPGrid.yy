@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Data Structures",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Enhanced Properties/Default Properties/Data Structures.yy",
+    "name": "Properties",
+    "path": "folders/TweenGMS Legacy/Scripts/Properties.yy",
   },
   "resourceVersion": "1.0",
   "name": "TPGrid",

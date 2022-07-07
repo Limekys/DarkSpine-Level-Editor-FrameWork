@@ -4,7 +4,7 @@ function dks_tween_play_all()
 	{
 	 if (have_tween)
 	 {
-	  TweenPlay(TweensTarget(id));
+	  TweenPlay(self);
 	 }
 	}
 }

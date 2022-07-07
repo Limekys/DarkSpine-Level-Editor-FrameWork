@@ -1,30 +1,30 @@
-/// @description  TPArray(array,x,[y])
-/// @param array
-/// @param x
-/// @param [y]
-function TPArray() {
+// Feather disable all
 
-	/// @param array
+function TPArray(_array, _x, _y=undefined)
+{
+	/// @function TPArray(array,x,[y])
+	/// @description Allows array index to be tweened as a property
+	/// @param {array} array
 	/// @param x
-	/// @param [y]		(optional)
+	/// @param [y]
+	/// @return {array}
 
-	var _return, _data;
-
-	_data[0] = argument[0];
-	_data[1] = argument[1];  
-
-	if (argument_count == 2){
-	    _return[0] = ext_Array1D__;    
-	}
-	else{
-	    _return[0] = ext_Array2D__;
-	    _data[2] = argument[2];
-	}
-
-	_return[1] = _data;
-	return _return;
-
-
-
-
+	static _ = TGMS_BuildProperty(TPArray, 
+		function(_value,_data) 
+		{
+			_data[0][@ _data[1]] = _value; 
+		},
+		function(_data) 
+		{ 
+			return _data[0][_data[1]]; 
+		}
+	);	
+	
+	return [ TPArray, (is_undefined(_y) ? [_array, _x] : [_array[_x], _y]) ];
 }
+
+
+
+
+
+

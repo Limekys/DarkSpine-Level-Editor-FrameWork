@@ -18,9 +18,9 @@ function dks_level_load(argument0, argument1)
 	buffer_delete(buffer_level);    
 	// Loading the room properties
 	var room_list = map[? "room_settings"];
-	room_width = room_list[| 0];
-	room_height= room_list[| 1];
-	room_speed = room_list[| 2];
+ 	room_set_width(room, room_list[| 0]);
+ 	room_set_height(room, room_list[| 1]);
+	game_set_speed(room_list[| 2], gamespeed_fps);
 	physics_pause = room_list[| 3];
 	physics_grav_x = room_list[| 4];
 	physics_grav_y = room_list[| 5];

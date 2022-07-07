@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Property Builders",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Enhanced Properties/Property Builders.yy",
+    "name": "Properties",
+    "path": "folders/TweenGMS Legacy/Scripts/Properties.yy",
   },
   "resourceVersion": "1.0",
   "name": "TGMS_BuildProperty",

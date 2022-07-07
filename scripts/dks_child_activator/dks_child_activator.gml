@@ -12,7 +12,7 @@ function dks_child_activator()
 	  if (have_tween)
 	  {
    
-	   TweenPlay(TweensTarget(id));
+	   TweenPlay(self);
 	  }
   
 	  if(is_physics)

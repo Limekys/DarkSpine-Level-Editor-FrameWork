@@ -1,12 +1,11 @@
-/// @description  TweenGet(tween,dataLabel)
-/// @param tween
-/// @param dataLabel
-/// @description Returns data type for the selected tween
-function TweenGet(argument0, argument1) {
+// Feather disable all
 
-	/// @param tween        tween id
-	/// @param dataLabel    data "label" string -- see script details
-
+function TweenGet(_t, _data_label)
+{
+	/// @function TweenGet(tween, dataLabel)
+	/// @description Returns value for data type of specified tween
+	/// @param tween		tween id
+	/// @param dataLabel	data "label" string -- see script details
 	/*
 	    Supported Data Labels:
 	        "group"         -- Group which tween belongs to
@@ -28,12 +27,11 @@ function TweenGet(argument0, argument1) {
 	            tween = TweenFire(id, EaseLinear, 0, true, 0, 1, "x", 0, 100);
 	            duration = TweenGet(tween, "duration");
             
-	    ***The following labels can return multiple values as an array
-	for multi-property tweens:
+	    ***	The following labels can return multiple values as an array for multi-property tweens:
         
-	"start"    
-	"destination"
-	"property"
+				"start"    
+				"destination"
+				"property"
         
 	        e.g.
 	            tween = TweenFire(id, EaseLinear, 0, true, 0, 1, "x", 0, 100, "y", 0, 100);
@@ -42,95 +40,86 @@ function TweenGet(argument0, argument1) {
 	            yStart = startValues[1];
 	*/
 
-	var _t = TGMS_FetchTween(argument0);
-	if (is_undefined(_t)) return undefined;
+	_t = TGMS_FetchTween(_t);
+	if (is_undefined(_t)) { return undefined; }
 
-	var _index = global.TGMS_TweenDataIndexes[? argument1];
+	_data_label = global.TGMS_TweenDataIndexes[? _data_label];
 
-	switch(_index)
+	switch(_data_label)
 	{
-	    case TWEEN.PROPERTY:
-	        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
-	        {
-	            var _return;
-	            var _data = _t[TWEEN.DATA];
-	            var _dataIndex = -1;
-            
-	            repeat(array_length(_data) div 5)
-	            {
-	                ++_dataIndex;
-	                _return[_dataIndex] = _data[5 + 5*_dataIndex];
-	            }
-            
-	            return _return;
-	        }
-	        else
-	        {
-	            return _t[TWEEN.PROPERTY_RAW];
-	        }
-	    break;
-    
-	    case TWEEN.DESTINATION:
-	        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
-	        {
-	            var _return;
-	            var _data = _t[TWEEN.DATA];
-	            var _dataIndex = -1;
-            
-	            repeat(array_length(_data) div 5)
-	            {
-	                ++_dataIndex;
-	                _return[_dataIndex] = _data[3 + 5*_dataIndex];
-	            }
-            
-	            return _return;
-	        }
-	        else
-	        {
-	            return _t[TWEEN.START] + _t[TWEEN.CHANGE];
-	        }
-	    break;
-    
-	    case TWEEN.START:
-	        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
-	        {
-	            var _return;
-	            var _data = _t[TWEEN.DATA];
-	            var _dataIndex = -1;
-            
-	            repeat(array_length(_data) div 5)
-	            {
-	                ++_dataIndex;
-	                _return[_dataIndex] = _data[2 + 5*_dataIndex];
-	            }
-            
-	            return _return;
-	        }
-	        else
-	        {
-	            return _t[TWEEN.START];
-	        }
-	    break;
-    
-	    case TWEEN.DELAY:
-	        var _delay = _t[TWEEN.DELAY];
+    case TWEEN.PROPERTY:
+        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
+        {
+            var _return = array_create(array_length(_data) div 5);
+            var _data = _t[TWEEN.DATA];
+            var _dataIndex = -1;
+        
+            repeat(array_length(_return))
+            {
+                ++_dataIndex;
+                _return[_dataIndex] = _data[5 + 5*_dataIndex];
+            }
+        
+            return _return;
+        }
+        else
+        {
+            return _t[TWEEN.PROPERTY_RAW];
+        }
+    break;
 
-	        if (_delay <= 0) { return 0; }
-	        else             { return _delay; }
-	    break;
-    
-	    case TWEEN.TIME_SCALE:
-	        return _t[TWEEN.TIME_SCALE] * _t[TWEEN.DIRECTION];
-	    break;
-    
-    
-	    default: // Directly access tween index
-	        return _t[_index]
+    case TWEEN.DESTINATION:
+        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
+        {
+            var _return = array_create(array_length(_data) div 5);
+            var _data = _t[TWEEN.DATA];
+            var _dataIndex = -1;
+        
+            repeat(array_length(_return))
+            {
+                ++_dataIndex;
+                _return[_dataIndex] = _data[3 + 5*_dataIndex];
+            }
+        
+            return _return;
+        }
+        else
+        {
+            return _t[TWEEN.START] + _t[TWEEN.CHANGE];
+        }
+    break;
+
+    case TWEEN.START:
+        if (_t[TWEEN.PROPERTY] == TGMS_MultiPropertySetter__)
+        {
+            var _return = array_create(array_length(_data) div 5);
+            var _data = _t[TWEEN.DATA];
+            var _dataIndex = -1;
+        
+            repeat(array_length(_return))
+            {
+                ++_dataIndex;
+                _return[_dataIndex] = _data[2 + 5*_dataIndex];
+            }
+        
+            return _return;
+        }
+        else
+        {
+            return _t[TWEEN.START];
+        }
+    break;
+
+    case TWEEN.DELAY:
+        if (_t[TWEEN.DELAY] <= 0) { return 0; }
+        else            		  { return _t[TWEEN.DELAY]; }
+    break;
+
+    case TWEEN.TIME_SCALE:
+        return _t[TWEEN.TIME_SCALE] * _t[TWEEN.DIRECTION];
+    break;
+
+    default: // Directly access tween index
+        return _t[_data_label]
 	}
-
-
-
-
-
-
 }

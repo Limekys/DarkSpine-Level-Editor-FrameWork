@@ -1,4 +1,5 @@
-/// @description  Process Tween Logic
+/// @description Process Tween Logic
+// Feather disable all
 
 // Mark update loop as being processed
 inUpdateLoop = true;
@@ -74,27 +75,21 @@ if (isEnabled)
                 {
                     if (_t[TWEEN.DELTA]) var _time = _t[TWEEN.TIME] + _t[TWEEN.TIME_SCALE] * _timeScaleDelta;   
                     else                 var _time = _t[TWEEN.TIME] + _t[TWEEN.TIME_SCALE] * _timeScale;
-                    
+
                     var _duration = _t[TWEEN.DURATION]; // Cache duration
-                    
+                   
                     // IF tween is within start/destination
                     if (_time > 0 && _time < _duration)
                     {
                         // Assign updated time
                         _t[@ TWEEN.TIME] = _time;
-
-if (TGMS_OPTIMISE_NULL_PROPERTY)
-{
-if (_t[TWEEN.PROPERTY] != TGMS_NULL__)
-{
-script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
-}
-}
-else
-{
-script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
-}
-}
+						_t[TWEEN.PROPERTY](script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+					}
+					else // Check for missed delta frame (this is for HTML5 purposes)
+					if (_timeScaleDelta == 0 && _t[TWEEN.DELTA])
+					{
+						_t[TWEEN.PROPERTY](script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+					}
                     else // Tween has reached start or destination
                     if (_t[TWEEN.TIME_SCALE] != 0) // Make sure time scale isn't "paused"
                     {
@@ -108,7 +103,7 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                             _t[@ TWEEN.TIME] = _duration*(_time > 0); // Update tween's time
                             
                             // Update property
-                            script_execute(_property, _t[TWEEN.START] + _t[TWEEN.CHANGE]*(_time > 0), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+							_property(_t[TWEEN.START] + _t[TWEEN.CHANGE]*(_time > 0), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                             
                             TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH); // Execute FINISH event
                             if (_t[TWEEN.DESTROY]) { TweenDestroy(_t); }          // Destroy tween if temporary
@@ -117,24 +112,23 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                         case TWEEN_MODE_BOUNCE:
                             if (_time > 0)
                             {
-                                _time = 2*_duration - _time;        // Update raw time with epsilon compensation
-                                _t[@ TWEEN.TIME] = _time;           // Assign raw time to tween
-                                _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
+	                            _time = 2*_duration - _time;        // Update raw time with epsilon compensation
+	                            _t[@ TWEEN.TIME] = _time;           // Assign raw time to tween
+	                            _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
                                 
-                                // Update property
-                                script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                            // Update property
+	                            _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                                 
-                                _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse direction 
-                                _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Reverse time scale
-                                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE); // Execute CONTINUE event
+	                            _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse direction 
+	                            _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Reverse time scale
+	                            TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE); // Execute CONTINUE event
                             }
                             else
                             {
-                                // Update tween's time
-                                _t[@ TWEEN.TIME] = 0;
+                                _t[@ TWEEN.TIME] = 0; // Update tween's time
                                 
                                 // Update property
-                                script_execute(_property, _t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+                                _property(_t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                                 
                                 _t[@ TWEEN.STATE] = TWEEN_STATE.STOPPED;              // Set tween state as STOPPED
                                 TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH); // Execute FINISH event
@@ -143,19 +137,19 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                         break;
                         
                         case TWEEN_MODE_PATROL:
-                            // Update raw time with epsilon compensation
-                            if (_time > 0) { _time = 2*_duration - _time; }
-                            else           { _time = -_time; }
+	                        // Update raw time with epsilon compensation
+	                        if (_time > 0) { _time = 2*_duration - _time; }
+	                        else           { _time = -_time; }
                         
-                            _t[@ TWEEN.TIME] = _time;           // Assign raw time to tween
-                            _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
+	                        _t[@ TWEEN.TIME] = _time;           // Assign raw time to tween
+	                        _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
                             
-                            // Update property
-                            script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                        // Update property
+	                        _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                             
-                            _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse tween's direction
-                            _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Reverse tween's time scale
-                            TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE); // Execute CONTINUE event
+	                        _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse tween's direction
+	                        _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Reverse tween's time scale
+	                        TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE); // Execute CONTINUE event
                         break;
                         
                         case TWEEN_MODE_LOOP:
@@ -167,7 +161,7 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                            _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
                             
                             // Update property
-                            script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+                            _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                             
                             // Execute LOOP event
                             TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE);
@@ -190,7 +184,7 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                            _time = clamp(_time, 0, _duration); // Clamp raw time used for tween calculation
                             
                             // Update property
-                            script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+                            _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                             
                             // Execute LOOP event
                             TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE);
@@ -203,8 +197,8 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                     }
                 }
             }
-
-            //----------------------------------------
+			
+			//----------------------------------------
             // Process Delays
             //----------------------------------------
             _tIndex = -1;
@@ -216,18 +210,18 @@ script_execute(_t[TWEEN.PROPERTY], script_execute(_t[TWEEN.EASE], _time, _t[TWEE
                 if (_t[TWEEN.STATE] == TWEEN_STATE.DELAYED && instance_exists(_t[TWEEN.TARGET]))
                 { 
                     // Decrement delay timer
-                    if (_t[TWEEN.DELTA]) _t[@ TWEEN.DELAY] -= abs(_t[TWEEN.TIME_SCALE]) * _timeScaleDelta;
-                    else _t[@ TWEEN.DELAY] -= abs(_t[TWEEN.TIME_SCALE]) * _timeScale;
+					if (_t[TWEEN.DELTA]) _t[@ TWEEN.DELAY] -= abs(_t[TWEEN.TIME_SCALE]) * _timeScaleDelta;
+					else				 _t[@ TWEEN.DELAY] -= abs(_t[TWEEN.TIME_SCALE]) * _timeScale;
                     
                     // IF the delay timer has expired
                     if (_t[TWEEN.DELAY] <= 0)
                     {
                         ds_list_delete(_delayedTweens, _tIndex--);                  // Remove tween from delay list
-                        _t[@ TWEEN.DELAY] = -1;// Indicate that delay has been removed from delay list
+                        _t[@ TWEEN.DELAY] = -1;										// Indicate that delay has been removed from delay list
                         TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH_DELAY); // Execute FINISH DELAY event
                         _t[@ TWEEN.STATE] = _t[TWEEN.TARGET];                       // Set tween as active    
                         // Update property with start value                 
-                        script_execute(_t[TWEEN.PROPERTY], _t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+                        _t[TWEEN.PROPERTY](_t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                         TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PLAY); // Execute PLAY event callbacks
                     }
                 }
@@ -311,7 +305,7 @@ repeat(_cleanIterations)
         else // Handle tween destruction...
         {
             ds_list_delete(_tweens, autoCleanIndex); // Remove tween from tweens list
-            
+			
             // Invalidate tween handle
             if (ds_map_exists(global.TGMS_MAP_TWEEN, _t[TWEEN.ID]))
             {
@@ -342,16 +336,26 @@ repeat(_cleanIterations)
 // Place auto clean index to size of tweens list if below or equal to 0
 if (autoCleanIndex <= 0) { autoCleanIndex = ds_list_size(_tweens); }
 
+// Indicate that we are finished processing the main update loop
 inUpdateLoop = false;
 
-if (doDestroy)
+// Update the state of tweens played inside the update loop -- prevents "racing"
+repeat(ds_queue_size(stateChanger) div 2)
 {
-event_perform(ev_destroy,0);
+	var _t = ds_queue_dequeue(stateChanger);
+	var _state = ds_queue_dequeue(stateChanger);
+	
+	if (TweenExists(_t))
+	{
+		_t[@ TWEEN.STATE] = _state;
+	}
 }
 
-
-
-
+// I forget why this is here... must be a reason!!
+if (doDestroy)
+{
+	event_perform(ev_destroy,0);
+}
 
 
 

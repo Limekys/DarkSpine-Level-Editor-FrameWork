@@ -1,17 +1,41 @@
-/// @description  TPExt(property,arg0,...)
-/// @param property
-/// @param arg0
-/// @param ...
-function TPExt() {
+// Feather disable all
 
+
+function TPExt(_property)
+{
+	/// @function TPExt(property,arg0,...)
 	/// @description Prepares an extended property script with custom arguments
+	/// @param property		property script
+	/// @param arg0			argument to pass to extended property scripts
+	/// @param ...			additional arguments to pass to extended property scripts
+	/// @return {array}
+	
+	/*
+		[Example]
+		
+		/// CREATE A SETTER SCRIPT
+		function ExtColourBlend(_value, _data, _target)
+		{
+			_target.image_blend = merge_colour(_data[0], _data[1], _value);
+		}
+		
+		// CREATE A DEFINED TWEEN WITH AN EXTENDED PROPERTY
+		tween = TweenCreate(id, EaseInQuad, 0, true, 0.0, 3.0, TPExt(extColourBlend, c_red, c_blue), 0, 1);
+	*/
 
-	/// @param propertyproperty script
-	/// @param arg0argument to pass to extended property scripts
-	/// @param ...additional arguments to pass to extended property scripts
+	// CONVERT METHOD TO INDEX
+	if (is_method(_property)) { _property = method_get_index(_property); }
 
-
-	if (argument_count > 2)
+	// ADD PROPERTY INDEX TO GLOBAL PROPERTY SETTERS MAP
+	if (global.__PropertySetters__[? _property] == undefined) {
+		global.__PropertySetters__[? _property] = _property;
+	}
+	
+	if (argument_count == 2)
+	{
+		return [_property, argument[1]];
+	}
+	else
 	{
 	    var _args;
 	    var _iArg = -1;
@@ -21,22 +45,8 @@ function TPExt() {
 	        _args[_iArg] = argument[_iArg+1];
 	    }
     
-	    var _return;
-	    _return[0] = argument[0];
-	    _return[1] = _args;
-	    return _return; 
+		return [_property, _args];
 	}
-	else
-	{
-	    var _return;
-	    _return[0] = argument[0];
-	    _return[1] = argument[1];
-	    return _return;
-	}
-
-
-
-
-
-
 }
+
+

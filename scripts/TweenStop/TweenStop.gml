@@ -1,16 +1,13 @@
-/// @description  TweenStop(tween[s])
-/// @param tween[s]
-/// @description Stops the selected tween[s]
-/// @param tween[s] tween id
-function TweenStop(argument0) {
-	// RETURNS: na
+// Feather disable all
 
-	var _t = argument0;
 
-	if (is_real(_t))
-	{
-	    _t = TGMS_FetchTween(_t);
-	}
+function TweenStop(_t)
+{
+	/// @function TweenStop(tween[s])
+	/// @description Stops the selected tween[s]
+	/// @param tween[s] tween id
+
+	if (is_real(_t)) { _t = TGMS_FetchTween(_t); }
 
 	if (is_array(_t))
 	{
@@ -34,14 +31,9 @@ function TweenStop(argument0) {
 	        }
 	    }
 	}
-
+	else
 	if (is_string(_t))
 	{
 	    TGMS_TweensExecute(_t, TweenStop);
 	}
-
-
-
-
-
 }

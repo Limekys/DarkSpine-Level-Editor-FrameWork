@@ -20,7 +20,7 @@ if is_array(variables)
          {
           if TweenIsPlaying(tween[i])
           {
-           TweenStop(TweensTarget(id))
+           TweenStop(self)
           }
           else
           {

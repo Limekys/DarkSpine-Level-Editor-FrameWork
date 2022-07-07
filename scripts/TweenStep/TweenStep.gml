@@ -1,13 +1,12 @@
-/// @description  TweenStep(tween[s],amount)
-/// @param tween[s]
-/// @param amount
-/// @description Steps a tween forward/backward by given amount
-/// @param tween[s]		tween id[s]
-/// @param amount		relative amount/direction to step (1.0 = forward | -1.0 = backward)
-function TweenStep(argument0, argument1) {
+// Feather disable all
 
-	/// return: na
 
+function TweenStep(_t, _amount)
+{
+	/// @function TweenStep(tween[s],amount)
+	/// @description Steps a tween forward/backward by given amount
+	/// @param tween[s]		tween id[s]
+	/// @param amount		relative amount/direction to step (1.0 = forward | -1.0 = backward)
 	/*
 	    INFO:
 	        Steps a tween forward or backward by a given amount.
@@ -18,13 +17,7 @@ function TweenStep(argument0, argument1) {
 	        Greater values, such as 2.0, will step a tween 2 steps forward.
 	*/
 
-	var _t = argument0;
-	var _amount = argument1;
-
-	if (is_real(_t))
-	{
-	    _t = TGMS_FetchTween(_t);
-	}
+	if (is_real(_t)) { _t = TGMS_FetchTween(_t); }
 
 	if (is_array(_t))
 	{        
@@ -43,8 +36,7 @@ function TweenStep(argument0, argument1) {
 	        if (_t[TWEEN.DELAY] > 0)
 	        { 
 	            // Decrement delay timer
-				if (_t[TWEEN.DELTA]) _t[@ TWEEN.DELAY] -= _amount * _timeScaleDelta;
-				else				 _t[@ TWEEN.DELAY] -= _amount * _timeScale;
+				_t[@ TWEEN.DELAY] -= _amount * (_t[TWEEN.DELTA] ? _timeScaleDelta : _timeScale);
             
 	            // IF the delay timer has expired
 	            if (_t[TWEEN.DELAY] <= 0)
@@ -54,7 +46,7 @@ function TweenStep(argument0, argument1) {
 	                // Execute FINISH DELAY event
 	                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH_DELAY);                    
 	                // Update property with start value
-	                script_execute(_t[TWEEN.PROPERTY], _t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                _t[TWEEN.PROPERTY](_t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
 	                // Execute PLAY event callbacks
 	                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_PLAY);
                 
@@ -63,13 +55,12 @@ function TweenStep(argument0, argument1) {
 	            else
 	            {
 	                if (_keepPaused) { _t[@ TWEEN.STATE] = TWEEN_STATE.PAUSED; }
-	                return 0;
+	                return;
 	            }
 	        }
                     
 	        // Get updated time -- [DELTA] boolean selects between step/delta time scale
-			if (_t[TWEEN.DELTA]) var _time = _t[TWEEN.TIME] + _amount * _t[TWEEN.TIME_SCALE] * _timeScaleDelta;   
-	        else                 var _time = _t[TWEEN.TIME] + _amount * _t[TWEEN.TIME_SCALE] * _timeScale;
+	        var _time = _t[TWEEN.TIME] + _amount * _t[TWEEN.TIME_SCALE] * (_t[TWEEN.DELTA] ? _timeScaleDelta : _timeScale)
         
 	        // Cache PROPERTY and DURATION
 	        var _property = _t[TWEEN.PROPERTY];
@@ -81,7 +72,7 @@ function TweenStep(argument0, argument1) {
 	            // Assign updated time
 	            _t[@ TWEEN.TIME] = _time;
 	            // Update tweened property with eased value
-	            if (_property != TGMS_NULL__) script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);    
+	            _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);    
 	        }
 	        else // Tween has reached start or destination
 	        if (_t[TWEEN.TIME_SCALE] != 0) // Make sure time scale isn't "paused"
@@ -94,7 +85,7 @@ function TweenStep(argument0, argument1) {
 	                _t[@ TWEEN.TIME] = _duration*(_time > 0); // Update tween's time
                 
 	                // Update property
-	                if (_property != TGMS_NULL__) script_execute(_property, _t[TWEEN.START] + _t[TWEEN.CHANGE]*(_time > 0), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                _property(_t[TWEEN.START] + _t[TWEEN.CHANGE]*(_time > 0), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                  
 	                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH); // Execute FINISH event
 	                if (_t[TWEEN.DESTROY]) TweenDestroy(_t);              // Destroy tween if temporary
@@ -108,7 +99,7 @@ function TweenStep(argument0, argument1) {
 	                    _time = clamp(_time, 0, _duration); // Clamp local raw time
                     
 	                    // Update property
-	                    if (_property != TGMS_NULL__) script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                    _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                     
 	                    _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse direction
 	                    _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Invert time scale
@@ -120,7 +111,7 @@ function TweenStep(argument0, argument1) {
 	                    _t[@ TWEEN.TIME] = 0;
                     
 	                    // Update property
-	                    if (_property != TGMS_NULL__) script_execute(_property, _t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                    _property(_t[TWEEN.START], _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
                     
 	                    _t[@ TWEEN.STATE] = TWEEN_STATE.STOPPED;              // Set tween state as STOPPED
 	                    TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_FINISH); // Execute FINISH event
@@ -137,7 +128,7 @@ function TweenStep(argument0, argument1) {
 	                _time = clamp(_time, 0, _duration); // Clamp local time
     
 	                // Update property
-	                if (_property != TGMS_NULL__) script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]); 
+	                _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]); 
                 
 	                _t[@ TWEEN.DIRECTION] = -_t[TWEEN.DIRECTION];           // Reverse tween direction
 	                _t[@ TWEEN.TIME_SCALE] = -_t[TWEEN.TIME_SCALE];         // Invert time scale
@@ -153,7 +144,7 @@ function TweenStep(argument0, argument1) {
 	                _time = clamp(_time, 0, _duration); // Clamp local raw time   
                 
 	                // Update property
-	                if (_property != TGMS_NULL__) script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
 	                // Execute LOOP event
 	                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE);
 	            break;
@@ -175,7 +166,7 @@ function TweenStep(argument0, argument1) {
 	                _time = clamp(_time, 0, _duration); // Clamp local raw time
                 
 	                // Update property
-	                if (_property != TGMS_NULL__) script_execute(_property, script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
+	                _property(script_execute(_t[TWEEN.EASE], _time, _t[TWEEN.START], _t[TWEEN.CHANGE], _duration), _t[TWEEN.DATA], _t[TWEEN.TARGET], _t[TWEEN.VARIABLE]);
 	                // Execute LOOP event
 	                TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_CONTINUE);
 	            break;
@@ -193,10 +184,6 @@ function TweenStep(argument0, argument1) {
 	{
 	    TGMS_TweensExecute(_t, TweenStep, _amount);
 	}
-
-
-
-
-
-
 }
+
+

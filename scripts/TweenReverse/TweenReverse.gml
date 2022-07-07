@@ -1,11 +1,11 @@
-/// @description  TweenReverse(tween[s])
-/// @param tween[s]
-/// @description Reverses the selected tween[s]
-/// @param tween[s] tween id
-function TweenReverse(argument0) {
-	// RETURNS: na
+// Feather disable all
 
-	var _t = argument0;
+
+function TweenReverse(_t)
+{
+	/// @function TweenReverse(tween[s])
+	/// @description Reverses the selected tween[s]
+	/// @param tween[s] tween id
 
 	if (is_real(_t))
 	{
@@ -21,15 +21,9 @@ function TweenReverse(argument0) {
 	        TGMS_ExecuteEvent(_t[TWEEN.EVENTS], TWEEN_EV_REVERSE);
 	    }
 	}
-
+	else
 	if (is_string(_t))
 	{
 	    TGMS_TweensExecute(_t, TweenReverse);
 	}
-
-
-
-
-
-
 }

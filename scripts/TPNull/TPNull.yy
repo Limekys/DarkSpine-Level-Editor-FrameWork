@@ -2,8 +2,8 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Other",
-    "path": "folders/Scripts/DARKSPINE/TweenGMS/Enhanced Properties/Default Properties/Other.yy",
+    "name": "Properties",
+    "path": "folders/TweenGMS Legacy/Scripts/Properties.yy",
   },
   "resourceVersion": "1.0",
   "name": "TPNull",

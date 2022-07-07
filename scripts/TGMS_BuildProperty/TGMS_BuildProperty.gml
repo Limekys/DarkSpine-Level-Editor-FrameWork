@@ -1,49 +1,36 @@
-/// @description  TGMS_BuildProperty("label",setter,getter)
-/// @param "label"
-/// @param setter
-/// @param getter
-/// @description Prepares a property to be optimised for TweenGMS
-function TGMS_BuildProperty() {
+// Feather disable all
 
+/// @function TGMS_BuildProperty("label",setter,getter)
+/// @description Prepares a property to be optimised for TweenGMS
+function TGMS_BuildProperty(_label, _setter, _getter) 
+{
+	/// @param "label"		string to associate with property
+	/// @param setter		setter function to associate with property
+	/// @param getter		getter function to associate with property
+
+	global.__PropertySetters__[? _label] = method(undefined, _setter);
+	global.__PropertyGetters__[? _label] = method(undefined, _getter);
+}
+
+
+/// TGMS_BuildPropertyNormalize("label",setter,getter)
+/// @description Prepares a normalized property to be usable by TweenGMS
+function TGMS_BuildPropertyNormalize(_label, _setter, _getter)
+{
 	/// @param "label"		string to associate with property
 	/// @param setter		setter script to associate with property
-	/// @param getter		getter script to associate with property
+	/// @param getter		getter script to assocaite with property
 
-	var _label = argument[0];
-	var _setter = argument[1];
+	/*
+		Info:
+			Normalized property scripts receive an eased value between 0 and 1
+			with additional data passed for the start/dest values.
+			See image_blend__ script for an example.
+	*/
 
-	global.__PropertySetters__[? _label] = _setter;
-	global.__PropertySetters__[? _setter] = _setter;
-
-	if (argument_count == 3)
-	{
-	    var _getter = argument[2];
-	    global.__PropertySetters__[? _getter] = _setter;
-    
-	    if (is_undefined(_getter))
-	    {
-	        global.__PropertyGetters__[? _label] = TGMS_NULL__;
-	        global.__PropertyGetters__[? _setter] = TGMS_NULL__;
-	        global.__PropertyGetters__[? _getter] = TGMS_NULL__;
-	    }
-	    else
-	    {
-	        global.__PropertyGetters__[? _label] = _getter;
-	        global.__PropertyGetters__[? _setter] = _getter;
-	        global.__PropertyGetters__[? _getter] = _getter;
-	    }
-	}
-	else
-	{
-	    global.__PropertyGetters__[? _label] = _setter;
-	    global.__PropertyGetters__[? _setter] = _setter;   
-	}
-
-
-
-
-
-
-
-
+	global.__NormalizedProperties__[? _label] = 1;
+	TGMS_BuildProperty(_label, _setter, _getter);
 }
+
+
+
